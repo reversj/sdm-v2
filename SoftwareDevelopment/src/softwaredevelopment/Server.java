@@ -41,14 +41,14 @@ public class Server extends Thread {
         running = true;
 
         try {
-            System.out.println("S: Connecting to Unity");
+            System.out.println("Server: Connecting to Unity");
 
             //Create a server socket on port 4443 (10 connect attempts max.)
             serverSocket = new ServerSocket(4443, 10);
 
             //Create client socket and accept() the incoming client.
             Socket socket = serverSocket.accept();
-            System.out.println("S: Connection with client has been made");
+            System.out.println("Server: Connection with client has been made");
 
             try {
                 //Sends a message to the client
@@ -66,14 +66,14 @@ public class Server extends Thread {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("S: Error");
+                System.out.println("Server: Receive/Send Error.");
                 e.printStackTrace();
             } finally {
                 socket.close();
-                System.out.println("S: Done.");
+                System.out.println("Server: Done.");
             }
         } catch (Exception e) {
-            System.out.println("S: Could not connect.");
+            System.out.println("Server: Could not connect.");
             e.printStackTrace();
         }
     }

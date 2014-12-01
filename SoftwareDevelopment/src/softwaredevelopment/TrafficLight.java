@@ -26,14 +26,14 @@ public class TrafficLight {
         this.stoplight = stoplight;
     }
 
-    public String Status() {
+    public String statusString() {
         switch (status) {
             case 1:
                 stat = "R";    //Red        
                 startTimer(2);
                 active = false;
                 soft.active = true;
-                System.out.println(status);
+                System.out.println("Server: Status = " + status + "\n");
                 break;
             case 2:
                 stat = "G";    //Green    
@@ -63,17 +63,17 @@ public class TrafficLight {
             int i = time;
 
             public void run() {
-                System.out.println(i);
+                System.out.println("Server: Time = " + i + "\n");
                 i--;
                 if (i < 0) {
                     timer.cancel();
                     if (active == true) {
                         nextStatus();
-                        soft.mServer.send(stoplight + "A" + Status());
+                        soft.mServer.send(stoplight + "A" + statusString());
                     } else {
                         status = 0;
                     }
-                    System.out.println(stoplight + "A" + Status());
+                    System.out.println(stoplight + "A" + statusString());
                 }
             }
         }, 0, 1000);
