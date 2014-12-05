@@ -33,12 +33,11 @@ public class SoftwareDevServer {
     }
     public static Server mServer = new Server(new Server.onMessageReceived() {
         public void messageReceived(String message) {
-            frame.txtarea.append("Client: " + message + "\n");
+            frame.txtAreaAppend("Client: " + message + "\n");
 
             if (!sys.messageList.contains(message)) {
                 try {
                     sys.addToList(message);
-                    // mServer.sent(x.response);
                     prevMessage = message;
 
                 } catch (Exception e) {

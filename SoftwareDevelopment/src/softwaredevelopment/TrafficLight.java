@@ -4,7 +4,6 @@
  */
 package softwaredevelopment;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -13,40 +12,43 @@ import java.util.TimerTask;
  */
 public class TrafficLight {
 
-    public int status = 1;
-    public String stat, response;
-    public boolean active;
-    public int prio, amount, trigger;
-    public SoftwareDevServer soft;
-    public String stoplight;
+    private int status = 1;
+    private String state, response;
+    private boolean active;
+    private int prio, amount, trigger;
+    private SoftwareDevServer softDevServ;
+    private String stopLightName;
+    private int stoplightRow;
+    
 
     public TrafficLight(String stoplight) {
-        soft = new SoftwareDevServer();
+        softDevServ = new SoftwareDevServer();
         active = true;
-        this.stoplight = stoplight;
+        stopLightName = stoplight;
+        stoplightRow = 0;
     }
 
     public String statusString() {
         switch (status) {
             case 1:
-                stat = "R";    //Red        
+                state = "R";    //Red        
                 startTimer(2);
                 active = false;
-                soft.active = true;
+                softDevServ.active = true;
                 System.out.println("Server: Status = " + status + "\n");
                 break;
             case 2:
-                stat = "G";    //Green    
+                state = "G";    //Green    
                 startTimer(6);
                 break;
             case 3:
-                stat = "O";   //Orange
+                state = "O";   //Orange
                 startTimer(4);
                 break;
             default:
-                stat = "Done";
+                state = "Done";
         }
-        return stat;
+        return state;
     }
 
     public void nextStatus() {
@@ -55,6 +57,23 @@ public class TrafficLight {
         } else {
             status = 1;
         }
+    }
+    
+    public void setState(String inputstate){
+        state = inputstate;
+    }
+    
+    public String getState(){
+        return state;
+    }
+    
+    public void setRowAmount(char amount){
+        stoplightRow = Character.getNumericValue(amount);
+        System.out.println("Row set to : " + amount);
+    }
+    
+    public int getRowAmount(){
+        return stoplightRow;
     }
 
     public void startTimer(final int time) {
@@ -69,11 +88,11 @@ public class TrafficLight {
                     timer.cancel();
                     if (active == true) {
                         nextStatus();
-                        soft.mServer.send(stoplight + "A" + statusString());
+                        softDevServ.mServer.send(stopLightName + statusString());
                     } else {
                         status = 0;
                     }
-                    System.out.println(stoplight + "A" + statusString());
+                    System.out.println(stopLightName + statusString());
                 }
             }
         }, 0, 1000);

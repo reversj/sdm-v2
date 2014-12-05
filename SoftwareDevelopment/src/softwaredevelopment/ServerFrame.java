@@ -20,12 +20,12 @@ import javax.swing.JTextArea;
  */
 public class ServerFrame extends JFrame implements ActionListener {
 
-    public SoftwareDevServer sdmserv;
-    final JFrame frame = new JFrame();
-    final Container top = new Container();
-    public JButton btnsend = new JButton("Send");
-    public JTextArea txtarea = new JTextArea();
-    public JTextArea txtinput = new JTextArea();
+    private final SoftwareDevServer sdmserv;
+    private final JFrame frame = new JFrame();
+    private final Container top = new Container();
+    private JButton btnsend = new JButton("Send");
+    private JTextArea txtarea = new JTextArea();
+    private JTextArea txtinput = new JTextArea();
 
     public ServerFrame() {
         sdmserv = new SoftwareDevServer();
@@ -46,9 +46,12 @@ public class ServerFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(btnsend)) {
             String message = txtinput.getText();
-            // soft.mServer.sent(message);
             sdmserv.sys.addToList(message);
             txtarea.append("Server: " + message + "\n");
         }
+    }
+    
+    public void txtAreaAppend(String printMessage){
+        txtarea.append(printMessage);
     }
 }

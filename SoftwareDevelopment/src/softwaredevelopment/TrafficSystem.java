@@ -5,8 +5,6 @@
 package softwaredevelopment;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,20 +13,20 @@ import java.util.List;
  */
 public class TrafficSystem extends Thread {
 
-    TrafficLight currentLight;
+    TrafficLight currentLight = new TrafficLight("CL");
     TrafficLock Lock;
     /* AUTOS */
-    TrafficLight AUTO_NOORD_OOST;
-    TrafficLight AUTO_NOORD_ZUID;
-    TrafficLight AUTO_NOORD_WEST;
-    TrafficLight AUTO_OOST_NOORD;
-    TrafficLight AUTO_OOST_WEST;
-    TrafficLight AUTO_WEST_NOORD;
-    TrafficLight AUTO_WEST_ZUID;
-    TrafficLight AUTO_WEST_OOST;
-    TrafficLight AUTO_ZUID_WEST;
-    TrafficLight AUTO_ZUID_NOORD;
-    TrafficLight AUTO_ZUID_OOST;
+    TrafficLight AUTO_NOORD_OOST = new TrafficLight("NOA");
+    TrafficLight AUTO_NOORD_ZUID = new TrafficLight("NZA");
+    TrafficLight AUTO_NOORD_WEST = new TrafficLight("NWA");
+    TrafficLight AUTO_OOST_NOORD = new TrafficLight("ONA");
+    TrafficLight AUTO_OOST_WEST = new TrafficLight("OWA");
+    TrafficLight AUTO_WEST_NOORD = new TrafficLight("WNA");
+    TrafficLight AUTO_WEST_ZUID = new TrafficLight("WZA");
+    TrafficLight AUTO_WEST_OOST = new TrafficLight("WOA");
+    TrafficLight AUTO_ZUID_WEST = new TrafficLight("ZWA");
+    TrafficLight AUTO_ZUID_NOORD = new TrafficLight("ZNA");
+    TrafficLight AUTO_ZUID_OOST = new TrafficLight("ZOA");
     /* BUS */
     TrafficLight BUS_OOST_WEST;
     /* FIETS */
@@ -49,67 +47,71 @@ public class TrafficSystem extends Thread {
 
     public TrafficSystem() {
         currentLight = new TrafficLight("");
-        currentLight.stat = "Done";
+        currentLight.setState("Done");
         Lock = new TrafficLock();
     }
 
     public void addToList(String message) {
         messageList.add(message);
     }
+    
     private int VAN = 1;
     private int NAAR = 2;
+    private int VOERTUIG = 3;
+    private int AANTAL = 4;
 
     public void messageHandler() {
         if (messageList.size() > 0) {
             message = messageList.get(0).toCharArray();
             if (message[VAN] == 'N') {
                 System.out.println(message);
-                if (message[NAAR] == 'O') {
-                    lightHandler(AUTO_NOORD_OOST, "NO");
+                if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
+                    lightHandler(AUTO_NOORD_OOST, message[AANTAL]);
                 }
-                if (message[NAAR] == 'Z') {
-                    lightHandler(AUTO_NOORD_ZUID, "NZ");
+                if (message[NAAR] == 'Z' && message[VOERTUIG] == 'A') {
+                    lightHandler(AUTO_NOORD_ZUID, message[AANTAL]);
                 }
-                if (message[NAAR] == 'W') {
-                    lightHandler(AUTO_NOORD_WEST, "NW");
+                if (message[NAAR] == 'W' && message[VOERTUIG] == 'A') {
+                    lightHandler(AUTO_NOORD_WEST, message[AANTAL]);
                 }
-            } else if (message[VAN] == 'O') {
+            } /*else if (message[VAN] == 'O' && message[VOERTUIG] == 'A') {
                 if (message[NAAR] == 'N') {
                     lightHandler(AUTO_OOST_NOORD, "ON");
                 }
-                if (message[NAAR] == 'W') {
+                if (message[NAAR] == 'W' && message[VOERTUIG] == 'A') {
                     lightHandler(AUTO_OOST_WEST, "OW");
                 }
-            } else if (message[VAN] == 'W') {
+            } else if (message[VAN] == 'W' && message[VOERTUIG] == 'A') {
                 if (message[NAAR] == 'N') {
                     lightHandler(AUTO_WEST_NOORD, "WN");
                 }
-                if (message[NAAR] == 'Z') {
+                if (message[NAAR] == 'Z' && message[VOERTUIG] == 'A') {
                     lightHandler(AUTO_WEST_ZUID, "WZ");
                 }
-                if (message[NAAR] == 'O') {
+                if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
                     lightHandler(AUTO_WEST_OOST, "WO");
                 }
-            } else if (message[VAN] == 'Z') {
+            } else if (message[VAN] == 'Z' && message[VOERTUIG] == 'A') {
                 if (message[NAAR] == 'W') {
                     lightHandler(AUTO_ZUID_WEST, "ZW");
                 }
-                if (message[NAAR] == 'N') {
+                if (message[NAAR] == 'N' && message[VOERTUIG] == 'A') {
                     lightHandler(AUTO_ZUID_NOORD, "ZN");
                 }
-                if (message[NAAR] == 'O') {
+                if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
                     lightHandler(AUTO_ZUID_OOST, "ZO");
                 }
-            }
+            }*/
         }
     }
 
-    public void lightHandler(TrafficLight light, String sLight) {
-        light = new TrafficLight(sLight);
+    public void lightHandler(TrafficLight light, char amount) {
+        //light = new TrafficLight(sLight);
         currentLight = light;
         light.startTimer(0);
         messageList.remove(0);
-        System.out.println(messageList);
+        light.setRowAmount(amount);
+        //System.out.println(messageList);
     }
 
     public void run() {
@@ -122,7 +124,7 @@ public class TrafficSystem extends Thread {
             } catch (Exception e) {
             }
             try {
-                if (currentLight.stat == "Done") {
+                if (currentLight.getState() == "Done") {
                     Lock.release();
                 }
             } catch (Exception e) {
