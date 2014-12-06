@@ -28,21 +28,23 @@ public class TrafficSystem extends Thread {
     TrafficLight AUTO_ZUID_NOORD = new TrafficLight("ZNA");
     TrafficLight AUTO_ZUID_OOST = new TrafficLight("ZOA");
     /* BUS */
-    TrafficLight BUS_OOST_WEST;
+    TrafficLight BUS_OOST_WEST = new TrafficLight("OWB");
     /* FIETS */
-    TrafficLight FIETS_NOORD_ZUID;
-    TrafficLight FIETS_ZUID_NOORD;
+    TrafficLight FIETS_NOORD_ZUID = new TrafficLight("NZF");
+    TrafficLight FIETS_ZUID_NOORD = new TrafficLight("ZNF");
     /* VOETGANGERS */
-    TrafficLight VOET_NOORD_ZUID;
-    TrafficLight VOET_ZUID_NOORD;
+    TrafficLight VOET_NOORD_ZUID = new TrafficLight("NZV");
+    TrafficLight VOET_ZUID_NOORD = new TrafficLight("ZNV");
     /* TREIN */
-    TrafficLight TREIN_OOST_WEST;
-    TrafficLight TREIN_WEST_OOST;
+    TrafficLight TREIN_OOST_WEST = new TrafficLight("OWT");
+    TrafficLight TREIN_WEST_OOST = new TrafficLight("WOT");
+    
     public boolean next = true;
     private boolean running = true;
     char[] message;
     String light;
     int switcher;
+    
     List<String> messageList = new ArrayList<String>();
 
     public TrafficSystem() {
@@ -74,34 +76,34 @@ public class TrafficSystem extends Thread {
                 if (message[NAAR] == 'W' && message[VOERTUIG] == 'A') {
                     lightHandler(AUTO_NOORD_WEST, message[AANTAL]);
                 }
-            } /*else if (message[VAN] == 'O' && message[VOERTUIG] == 'A') {
+            } else if (message[VAN] == 'O' && message[VOERTUIG] == 'A') {
                 if (message[NAAR] == 'N') {
-                    lightHandler(AUTO_OOST_NOORD, "ON");
+                    lightHandler(AUTO_OOST_NOORD, message[AANTAL]);
                 }
                 if (message[NAAR] == 'W' && message[VOERTUIG] == 'A') {
-                    lightHandler(AUTO_OOST_WEST, "OW");
+                    lightHandler(AUTO_OOST_WEST, message[AANTAL]);
                 }
             } else if (message[VAN] == 'W' && message[VOERTUIG] == 'A') {
                 if (message[NAAR] == 'N') {
-                    lightHandler(AUTO_WEST_NOORD, "WN");
+                    lightHandler(AUTO_WEST_NOORD, message[AANTAL]);
                 }
                 if (message[NAAR] == 'Z' && message[VOERTUIG] == 'A') {
-                    lightHandler(AUTO_WEST_ZUID, "WZ");
+                    lightHandler(AUTO_WEST_ZUID, message[AANTAL]);
                 }
                 if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
-                    lightHandler(AUTO_WEST_OOST, "WO");
+                    lightHandler(AUTO_WEST_OOST, message[AANTAL]);
                 }
             } else if (message[VAN] == 'Z' && message[VOERTUIG] == 'A') {
                 if (message[NAAR] == 'W') {
-                    lightHandler(AUTO_ZUID_WEST, "ZW");
+                    lightHandler(AUTO_ZUID_WEST, message[AANTAL]);
                 }
                 if (message[NAAR] == 'N' && message[VOERTUIG] == 'A') {
-                    lightHandler(AUTO_ZUID_NOORD, "ZN");
+                    lightHandler(AUTO_ZUID_NOORD, message[AANTAL]);
                 }
                 if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
-                    lightHandler(AUTO_ZUID_OOST, "ZO");
+                    lightHandler(AUTO_ZUID_OOST, message[AANTAL]);
                 }
-            }*/
+            }
         }
     }
 
