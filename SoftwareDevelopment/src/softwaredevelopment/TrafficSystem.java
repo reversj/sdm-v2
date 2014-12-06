@@ -119,7 +119,7 @@ public class TrafficSystem extends Thread {
     public void run() {
         while (running) {
             try {
-                if (Lock.locked == false) {
+                if (Lock.getLock() == false) {
                     messageHandler();
                     Lock.lock();
                 }
@@ -130,31 +130,8 @@ public class TrafficSystem extends Thread {
                     Lock.release();
                 }
             } catch (Exception e) {
+                
             }
         }
-        /*
-        
-         if(next == true)
-         {
-            
-            
-         Collections.sort(traficLightPriorList, new Comparator<TraficLight>() {
-         public int compare(TrafficLight o1, TrafficLight o2) {
-         return o1.prio > o2.prio ? -1 : o1.prio == o2.prio ? 0 : 1;
-         }
-         });
-         /*
-       
-         Lijst sorteren en kijken welke stoplichten aan en uit kunnen
-        
-         Logica voor welke prior eerst moet hierin
-       
-      
-       
-         current_TraficLight = traficLightPriorList.get(1);  
-         current_TraficLight.StartTimer(0);
-         traficLightPriorList.remove(current_TraficLight);
-                
-         } */
     }
 }

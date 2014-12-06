@@ -20,38 +20,37 @@ import javax.swing.JTextArea;
  */
 public class ServerFrame extends JFrame implements ActionListener {
 
-    private final SoftwareDevServer sdmserv;
-    private final JFrame frame = new JFrame();
-    private final Container top = new Container();
-    private JButton btnsend = new JButton("Send");
-    private JTextArea txtarea = new JTextArea();
-    private JTextArea txtinput = new JTextArea();
+    private SoftwareDevServer softDevServer;
+    private Container frameTop = new Container();
+    private JButton btnSend = new JButton("Send");
+    private JTextArea txtArea = new JTextArea();
+    private JTextArea txtInput = new JTextArea();
 
     public ServerFrame() {
-        sdmserv = new SoftwareDevServer();
+        softDevServer = new SoftwareDevServer();
 
-        top.setLayout(new GridLayout(1, 3));
-        top.add(btnsend);
-        top.add(txtinput);
-        btnsend.addActionListener(this);
-        this.add(top, BorderLayout.NORTH);
+        frameTop.setLayout(new GridLayout(1, 3));
+        frameTop.add(btnSend);
+        frameTop.add(txtInput);
+        btnSend.addActionListener(this);
+        this.add(frameTop, BorderLayout.NORTH);
 
-        txtarea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(txtarea);
+        txtArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(txtArea);
 
         this.add(scrollPane);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(btnsend)) {
-            String message = txtinput.getText();
-            sdmserv.sys.addToList(message);
-            txtarea.append("Server: " + message + "\n");
+        if (e.getSource().equals(btnSend)) {
+            String message = txtInput.getText();
+            softDevServer.getSys().addToList(message);
+            txtArea.append("Server: " + message + "\n");
         }
     }
     
     public void txtAreaAppend(String printMessage){
-        txtarea.append(printMessage);
+        txtArea.append(printMessage);
     }
 }

@@ -13,16 +13,15 @@ import java.util.TimerTask;
 public class TrafficLight {
 
     private int status = 1;
-    private String state, response;
+    private String state;
     private boolean active;
-    private int prio, amount, trigger;
-    private SoftwareDevServer softDevServ;
+    private SoftwareDevServer softDevServer;
     private String stopLightName;
     private int stoplightRow;
     
 
     public TrafficLight(String stoplight) {
-        softDevServ = new SoftwareDevServer();
+        softDevServer = new SoftwareDevServer();
         active = true;
         stopLightName = stoplight;
         stoplightRow = 0;
@@ -34,7 +33,7 @@ public class TrafficLight {
                 state = "R";    //Red        
                 startTimer(2);
                 active = false;
-                softDevServ.active = true;
+                softDevServer.setActive(true);
                 System.out.println("Server: Status = " + status + "\n");
                 break;
             case 2:
@@ -88,7 +87,7 @@ public class TrafficLight {
                     timer.cancel();
                     if (active == true) {
                         nextStatus();
-                        softDevServ.mServer.send(stopLightName + statusString());
+                        softDevServer.mServer.send(stopLightName + statusString());
                     } else {
                         status = 0;
                     }

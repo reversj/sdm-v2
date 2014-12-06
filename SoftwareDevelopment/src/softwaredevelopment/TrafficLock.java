@@ -7,11 +7,11 @@ package softwaredevelopment;
 
 /**
  *
- * @author Jan
+ * @author Niels Riemersma
  */
 public class TrafficLock {
 
-    public boolean locked = false;
+    private boolean locked = false;
 
     public void lock() {
         if (locked == false) {
@@ -21,5 +21,9 @@ public class TrafficLock {
 
     public void release() {
         locked = false;
+    }
+    
+    public boolean getLock(){
+        return locked;
     }
 }

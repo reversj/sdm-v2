@@ -15,10 +15,10 @@ public class SoftwareDevServer {
     /**
      * @param args the command line arguments
      */
-    static ServerFrame frame = new ServerFrame();
-    static TrafficSystem sys;
-    static boolean active = true;
-    static String prevMessage;
+    private static ServerFrame frame = new ServerFrame();
+    private static TrafficSystem sys;
+    private boolean active = true;
+    private static String prevMessage;
 
     public static void main(String[] args) {
         sys = new TrafficSystem();
@@ -53,5 +53,17 @@ public class SoftwareDevServer {
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+    
+    public TrafficSystem getSys(){
+        return sys;
+    }
+    
+    public void setActive(boolean setter){
+        active = setter;
+    }
+    
+    public boolean getActive(){
+        return active;
     }
 }
