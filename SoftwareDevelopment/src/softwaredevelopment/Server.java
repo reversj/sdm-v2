@@ -5,6 +5,7 @@
 package softwaredevelopment;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -13,16 +14,16 @@ import java.net.Socket;
 
 /**
  *
- * @author Jan
+ * @author Niels Riemersma (Jan ter Schure)
  */
 public class Server extends Thread {
 
     private ServerSocket serverSocket;
-    
+
     private Server.onMessageReceived messageListener;
     private final int SERVERPORT = 4443;
     private boolean running = false;
-    
+
     private PrintWriter outputWriter;
     private BufferedReader inputReader;
 
@@ -61,28 +62,30 @@ public class Server extends Thread {
                         messageListener.messageReceived(message);
                     }
                 }
-            } catch (Exception e) {
+            } catch (IOException ioe) {
                 System.out.println("Server: Send/Receive error.");
-                e.printStackTrace();
+                ioe.printStackTrace();
             } finally {
                 socket.close();
                 System.out.println("Server: Finished.");
             }
-        } catch (Exception e) {
+        } catch (IOException ioe) {
             System.out.println("Server: Could not connect to client.");
-            e.printStackTrace();
+            ioe.printStackTrace();
         }
     }
 
     public interface onMessageReceived {
+
         public void messageReceived(String message);
     }
 
     public void send(String sendString) {
         try {
             outputWriter.println(sendString);
-        } catch (Exception ex) {
+        } catch (Exception e) {
             System.out.println("Server: Could not send.");
+            e.printStackTrace();
         }
     }
 }
