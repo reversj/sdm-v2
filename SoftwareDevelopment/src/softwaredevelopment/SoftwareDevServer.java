@@ -22,6 +22,7 @@ public class SoftwareDevServer {
 
     public static void main(String[] args) {
         sys = new TrafficSystem();
+
         frame();
         mServer.start();
         sys.start();
@@ -34,14 +35,15 @@ public class SoftwareDevServer {
         public void messageReceived(String message) {
             frame.txtAreaAppend("Client: " + message + "\n");
 
-            try {
-                sys.messageHandler(message.toCharArray());
-                prevMessage = message;
+            if (!sys.messageList.contains(message)) {
+                try {
+                    sys.addToList(message);
+                    prevMessage = message;
 
-            } catch (Exception e) {
-                System.out.println(e);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
-
         }
     });
 
@@ -52,16 +54,16 @@ public class SoftwareDevServer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
-    public TrafficSystem getSys() {
+    
+    public TrafficSystem getSys(){
         return sys;
     }
-
-    public void setActive(boolean setter) {
+    
+    public void setActive(boolean setter){
         active = setter;
     }
-
-    public boolean getActive() {
+    
+    public boolean getActive(){
         return active;
     }
 }
