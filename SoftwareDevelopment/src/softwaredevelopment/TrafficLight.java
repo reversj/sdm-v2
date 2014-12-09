@@ -80,7 +80,7 @@ public class TrafficLight {
     
     public void setRowAmount(char amount){
         stoplightRow = Character.getNumericValue(amount);
-        System.out.println("Row set to : " + amount);
+        //System.out.println("Row set to : " + amount);
     }
     
     public int getRowAmount(){

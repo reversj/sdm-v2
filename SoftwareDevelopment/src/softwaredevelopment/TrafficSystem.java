@@ -15,11 +15,11 @@ import java.util.logging.Logger;
  */
 public class TrafficSystem extends Thread {
 
-    TrafficLight prevLight = new TrafficLight("CL");
-    TrafficLight firstPrio;
-    TrafficLight secPrio;
-    TrafficLight thirdPrio;
-    TrafficLock Lock;
+    TrafficLight prevLight = new TrafficLight("PREV");
+    TrafficLight firstPrio = new TrafficLight("FIRST");
+    TrafficLight secPrio = new TrafficLight("SECOND");
+    TrafficLight thirdPrio = new TrafficLight("THIRD");
+
     /* AUTOS */
     TrafficLight AUTO_NOORD_OOST = new TrafficLight("NOA");
     TrafficLight AUTO_NOORD_ZUID = new TrafficLight("NZA");
@@ -56,9 +56,10 @@ public class TrafficSystem extends Thread {
     private int AANTAL = 4;
 
     public TrafficSystem() {
-        prevLight = new TrafficLight("PREV");
-        firstPrio = new TrafficLight("FIRST");
         prevLight.deactivate();
+        firstPrio.deactivate();
+        secPrio.deactivate();
+        thirdPrio.deactivate();
     }
 
     public void messageHandler(char[] message) {
@@ -136,29 +137,29 @@ public class TrafficSystem extends Thread {
         TrafficLight[] possibleLights;
 
         if (light.getName().equals("NWA")) {
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_OOST_WEST, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
+            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("NZA")) {
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_ZUID_NOORD};
+            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_ZUID_OOST};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("NOA")) {
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
             nextLights(possibleLights);
         }
-        if (light.getName().equals("ZNA")) {
+        if (light.getName().equals("ZNA") || light.getName().equals("ZOA")) {
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_ZUID_WEST, AUTO_WEST_ZUID};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("ZWA")) {
-            possibleLights = new TrafficLight[]{AUTO_ZUID_NOORD, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
+            possibleLights = new TrafficLight[]{AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("ONA")) {
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_ZUID_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("OWA")) {
             possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
             nextLights(possibleLights);
@@ -166,35 +167,48 @@ public class TrafficSystem extends Thread {
         if (light.getName().equals("WNA")) {
             possibleLights = new TrafficLight[]{AUTO_NOORD_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("WOA")) {
             possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_WEST_NOORD, AUTO_WEST_ZUID};
             nextLights(possibleLights);
-        } 
+        }
         if (light.getName().equals("WZA")) {
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_OOST_WEST, AUTO_ZUID_NOORD, AUTO_ZUID_WEST, AUTO_WEST_NOORD, AUTO_WEST_OOST};
+            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_OOST_WEST, AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_ZUID_WEST, AUTO_WEST_NOORD, AUTO_WEST_OOST};
             nextLights(possibleLights);
         }
     }
 
     public void nextLights(TrafficLight[] possibleLights) {
-        TrafficLight SecondPrior = new TrafficLight("placeHolder");
-        // TrafficLight SecondPrior = new TrafficLight("placeHolder");
         for (int i = 0; i < possibleLights.length; i++) {
-            SecondPrior = (possibleLights[i].getRowAmount() > SecondPrior.getRowAmount() ? possibleLights[i] : SecondPrior);
+            if (possibleLights[i].getRowAmount() > secPrio.getRowAmount()) {
+                String tempname = possibleLights[i].getName();
+                if (!secPrio.getName().equals(tempname)) {
+                    secPrio = possibleLights[i];
+                }
+            } else if (possibleLights[i].getRowAmount() > thirdPrio.getRowAmount()) {
+                String tempname = possibleLights[i].getName();
+                if (!thirdPrio.getName().equals(tempname) && !thirdPrio.getName().equals(secPrio.getName())) {
+                    thirdPrio = possibleLights[i];
+                }
+            }
         }
+
         firstPrio.startTimer(0);
-        SecondPrior.activate();
-        SecondPrior.startTimer(1);
-        SecondPrior.resetRowAmount();
+        secPrio.activate();
+        secPrio.startTimer(0.5f);
+        secPrio.resetRowAmount();
+
+        thirdPrio.activate();
+        thirdPrio.startTimer(1);
+        thirdPrio.resetRowAmount();
     }
 
     public void nextLight() {
         if (firstPrio.getRowAmount() > 0) {
             System.out.println("Next Light : " + firstPrio.getName());
             firstPrio.activate();
-            //highestPrior.StartTimer(0);
             checkPossible(firstPrio);
+            checkPossible(secPrio);
             prevLight = firstPrio;
             prevLight.resetRowAmount();
         }
@@ -209,7 +223,7 @@ public class TrafficSystem extends Thread {
 
             }
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException ex) {
                 //Logger.getLogger(TrafficSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
