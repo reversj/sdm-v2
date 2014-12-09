@@ -4,6 +4,7 @@
  */
 package softwaredevelopment;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -19,6 +20,9 @@ public class TrafficLight {
     private String stopLightName;
     private int stoplightRow;
     
+    static Timer timer;
+    static int count;
+    
 
     public TrafficLight(String stoplight) {
         softDevServer = new SoftwareDevServer();
@@ -27,7 +31,7 @@ public class TrafficLight {
         stoplightRow = 0;
     }
 
-    public String statusString() {
+    public String stateString() {
         switch (status) {
             case 1:
                 state = "R";    //Red        
@@ -49,14 +53,6 @@ public class TrafficLight {
         }
         return state;
     }
-
-    public void nextStatus() {
-        if (status < 3) {
-            status++;
-        } else {
-            status = 1;
-        }
-    }
     
     public void setState(String inputstate){
         state = inputstate;
@@ -64,6 +60,22 @@ public class TrafficLight {
     
     public String getState(){
         return state;
+    }
+    
+    public boolean getActive(){
+        return active;
+    }
+    
+    public void activate(){
+        active = true;
+    }
+    
+    public void deactivate(){
+        active = false;
+    }
+    
+    public String getName(){
+        return stopLightName;
     }
     
     public void setRowAmount(char amount){
@@ -74,24 +86,37 @@ public class TrafficLight {
     public int getRowAmount(){
         return stoplightRow;
     }
+    
+    public void resetRowAmount(){
+        stoplightRow = 0;
+    }
+    
+    public void nextStatus() {
+        if (status < 3) {
+            status++;
+        } else {
+            status = 1;
+        }
+    }
 
-    public void startTimer(final int time) {
+    public void startTimer(final float time) {
         final java.util.Timer timer = new java.util.Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            int i = time;
+            float i = time;
 
             public void run() {
-                System.out.println("Server: Time = " + i + "\n");
+                //System.out.println("Server: Time = " + i + "\n");
                 i--;
                 if (i < 0) {
                     timer.cancel();
                     if (active == true) {
                         nextStatus();
-                        softDevServer.mServer.send(stopLightName + statusString());
+                        String temp = stateString();
+                        softDevServer.mServer.send(stopLightName+temp);
                     } else {
-                        status = 0;
+                        timer.cancel();
+                        //status = 0;test
                     }
-                    System.out.println(stopLightName + statusString());
                 }
             }
         }, 0, 1000);

@@ -35,15 +35,13 @@ public class SoftwareDevServer {
         public void messageReceived(String message) {
             frame.txtAreaAppend("Client: " + message + "\n");
 
-            if (!sys.messageList.contains(message)) {
                 try {
-                    sys.addToList(message);
+                    sys.messageHandler(message.toCharArray());
                     prevMessage = message;
 
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-            }
         }
     });
 

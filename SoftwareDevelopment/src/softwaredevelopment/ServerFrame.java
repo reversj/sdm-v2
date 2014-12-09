@@ -45,7 +45,6 @@ public class ServerFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(btnSend)) {
             String message = txtInput.getText();
-            softDevServer.getSys().addToList(message);
             txtArea.append("Server: " + message + "\n");
         }
     }
