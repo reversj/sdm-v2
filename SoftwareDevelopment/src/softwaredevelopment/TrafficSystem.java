@@ -4,19 +4,14 @@
  */
 package softwaredevelopment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Niels Riemersma
  */
 public class TrafficSystem extends Thread {
 
-    TrafficLight prevLight = new TrafficLight("PREV");
-    TrafficLight firstPrio = new TrafficLight("FIRST");
+    TrafficLight prevLight;
+    TrafficLight firstPrio;
     TrafficLight secPrio = new TrafficLight("SECOND");
     TrafficLight thirdPrio = new TrafficLight("THIRD");
 
@@ -44,6 +39,9 @@ public class TrafficSystem extends Thread {
     TrafficLight TREIN_OOST_WEST = new TrafficLight("OWT");
     TrafficLight TREIN_WEST_OOST = new TrafficLight("WOT");
 
+    TrafficLight[] AUTO_LIGHTS = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_OOST_WEST,
+        AUTO_WEST_NOORD, AUTO_WEST_ZUID, AUTO_WEST_OOST, AUTO_ZUID_WEST, AUTO_ZUID_NOORD, AUTO_ZUID_OOST};
+
     public boolean next = true;
     private boolean running = true;
     char[] message;
@@ -56,15 +54,15 @@ public class TrafficSystem extends Thread {
     private int AANTAL = 4;
 
     public TrafficSystem() {
+        prevLight = new TrafficLight("PREV");
+        firstPrio = new TrafficLight("FIRST");
         prevLight.deactivate();
-        firstPrio.deactivate();
         secPrio.deactivate();
         thirdPrio.deactivate();
     }
 
     public void messageHandler(char[] message) {
         if (message[VAN] == 'N') {
-            System.out.println(message);
             if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
                 lightHandler(AUTO_NOORD_OOST, message[AANTAL]);
             }
@@ -102,6 +100,9 @@ public class TrafficSystem extends Thread {
                 lightHandler(AUTO_ZUID_OOST, message[AANTAL]);
             }
         }
+        if (message[VAN] == 'O' && message[NAAR] == 'W' && message[VOERTUIG] == 'B') {
+            firstPrio = BUS_OOST_WEST;
+        }
     }
 
     public void lightHandler(TrafficLight light, char amount) {
@@ -111,104 +112,123 @@ public class TrafficSystem extends Thread {
         }
     }
 
-    public void checkHighAmount() {
+    public void checkHighAmount(TrafficLight[] all_lights) {
         if (firstPrio != null);
         {
-            firstPrio = (AUTO_NOORD_WEST.getRowAmount() > firstPrio.getRowAmount() ? AUTO_NOORD_WEST : firstPrio);
-            firstPrio = (AUTO_NOORD_OOST.getRowAmount() > firstPrio.getRowAmount() ? AUTO_NOORD_OOST : firstPrio);
-            firstPrio = (AUTO_NOORD_ZUID.getRowAmount() > firstPrio.getRowAmount() ? AUTO_NOORD_ZUID : firstPrio);
-
-            firstPrio = (AUTO_OOST_NOORD.getRowAmount() > firstPrio.getRowAmount() ? AUTO_OOST_NOORD : firstPrio);
-            firstPrio = (AUTO_OOST_WEST.getRowAmount() > firstPrio.getRowAmount() ? AUTO_OOST_WEST : firstPrio);
-
-            firstPrio = (AUTO_WEST_NOORD.getRowAmount() > firstPrio.getRowAmount() ? AUTO_WEST_NOORD : firstPrio);
-            firstPrio = (AUTO_WEST_ZUID.getRowAmount() > firstPrio.getRowAmount() ? AUTO_WEST_ZUID : firstPrio);
-            firstPrio = (AUTO_WEST_OOST.getRowAmount() > firstPrio.getRowAmount() ? AUTO_WEST_OOST : firstPrio);
-
-            firstPrio = (AUTO_ZUID_WEST.getRowAmount() > firstPrio.getRowAmount() ? AUTO_ZUID_WEST : firstPrio);
-            firstPrio = (AUTO_ZUID_NOORD.getRowAmount() > firstPrio.getRowAmount() ? AUTO_ZUID_NOORD : firstPrio);
-            firstPrio = (AUTO_ZUID_OOST.getRowAmount() > firstPrio.getRowAmount() ? AUTO_ZUID_OOST : firstPrio);
-
-            System.out.println(firstPrio.getName() + " amount : " + firstPrio.getRowAmount());
+            for (int i = 0; i < all_lights.length; i++) {
+                if (all_lights[i].getRowAmount() > 8) {
+                    firstPrio = all_lights[i];
+                } else if (all_lights[i].getRowAmount() > firstPrio.getRowAmount()) {
+                    firstPrio = all_lights[i];
+                }
+            }
         }
     }
 
-    public void checkPossible(TrafficLight light) {
+    public TrafficLight[] checkPossible(TrafficLight light) {
         TrafficLight[] possibleLights;
 
-        if (light.getName().equals("NWA")) {
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+        if (light.getName().equals("OWB")) { // 2
+            possibleLights = new TrafficLight[]{AUTO_WEST_OOST, AUTO_WEST_ZUID};
+            return possibleLights;
         }
-        if (light.getName().equals("NZA")) {
+        if (light.getName().equals("NWA")) { // 7
+            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
+            return possibleLights;
+        }
+        if (light.getName().equals("NZA")) { // 5
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_ZUID_OOST};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("NOA")) {
+        if (light.getName().equals("NOA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("ZNA") || light.getName().equals("ZOA")) {
+        if (light.getName().equals("ZNA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_ZUID_WEST, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("ZWA")) {
+        if (light.getName().equals("ZOA")) { // 4
+            possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_ZUID_WEST, AUTO_WEST_ZUID};
+            return possibleLights;
+        }
+        if (light.getName().equals("ZWA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("ONA")) {
+        if (light.getName().equals("ONA")) { // 7
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_ZUID_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("OWA")) {
+        if (light.getName().equals("OWA")) { // 3
             possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("WNA")) {
+        if (light.getName().equals("WNA")) { // 3
             possibleLights = new TrafficLight[]{AUTO_NOORD_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("WOA")) {
+        if (light.getName().equals("WOA")) { // 5
             possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_WEST_NOORD, AUTO_WEST_ZUID};
-            nextLights(possibleLights);
+            return possibleLights;
         }
-        if (light.getName().equals("WZA")) {
+        if (light.getName().equals("WZA")) { // 9
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_OOST_WEST, AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_ZUID_WEST, AUTO_WEST_NOORD, AUTO_WEST_OOST};
-            nextLights(possibleLights);
+            return possibleLights;
         }
+        return null;
     }
 
-    public void nextLights(TrafficLight[] possibleLights) {
+    public void secLight(TrafficLight[] possibleLights) {
+        secPrio = possibleLights[1];
+
         for (int i = 0; i < possibleLights.length; i++) {
             if (possibleLights[i].getRowAmount() > secPrio.getRowAmount()) {
                 String tempname = possibleLights[i].getName();
                 if (!secPrio.getName().equals(tempname)) {
                     secPrio = possibleLights[i];
                 }
-            } else if (possibleLights[i].getRowAmount() > thirdPrio.getRowAmount()) {
-                String tempname = possibleLights[i].getName();
-                if (!thirdPrio.getName().equals(tempname) && !thirdPrio.getName().equals(secPrio.getName())) {
-                    thirdPrio = possibleLights[i];
-                }
             }
         }
 
-        firstPrio.startTimer(0);
         secPrio.activate();
-        secPrio.startTimer(0.5f);
         secPrio.resetRowAmount();
+        thirdLight(checkPossible(secPrio), possibleLights);
+    }
 
+    public void thirdLight(TrafficLight[] firstLights, TrafficLight[] secLights) {
+
+        for (int i = 0; i < firstLights.length; i++) {
+            for (int j = 0; j < secLights.length; j++) {
+                if (firstLights[i].getName().equals(secLights[j].getName())) {
+                    String tempname = firstLights[i].getName();
+                    if (!thirdPrio.getName().equals(tempname) && (!tempname.equals(firstPrio.getName())) && (!tempname.equals(secPrio.getName()))) {
+                        thirdPrio = firstLights[i];
+                    }
+                }
+            }
+        }
         thirdPrio.activate();
-        thirdPrio.startTimer(1);
         thirdPrio.resetRowAmount();
+        activateLights();
+    }
+
+    public void activateLights() {
+        firstPrio.startTimer(0);
+        secPrio.startTimer(0);
+        thirdPrio.startTimer(0);
+        System.out.println("Activating lights at:");
+        System.out.println(firstPrio.getName());
+        System.out.println(secPrio.getName());
+        System.out.println(thirdPrio.getName());
+        System.out.println("------------------------");
     }
 
     public void nextLight() {
         if (firstPrio.getRowAmount() > 0) {
-            System.out.println("Next Light : " + firstPrio.getName());
             firstPrio.activate();
-            checkPossible(firstPrio);
-            checkPossible(secPrio);
+            firstPrio.resetRowAmount();
+            secLight(checkPossible(firstPrio));
             prevLight = firstPrio;
             prevLight.resetRowAmount();
         }
@@ -216,14 +236,13 @@ public class TrafficSystem extends Thread {
 
     public void run() {
         while (running) {
-            if (prevLight.getActive() == false) {
+            if (prevLight.getActive() == false && secPrio.getActive() == false && thirdPrio.getActive() == false) {
                 nextLight();
-                checkHighAmount();
-            } else {
-
+                checkHighAmount(AUTO_LIGHTS);
             }
+
             try {
-                Thread.sleep(10000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 //Logger.getLogger(TrafficSystem.class.getName()).log(Level.SEVERE, null, ex);
             }

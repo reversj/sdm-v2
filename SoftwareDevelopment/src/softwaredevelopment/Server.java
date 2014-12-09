@@ -13,16 +13,16 @@ import java.net.Socket;
 
 /**
  *
- * @author Jan
+ * @author Niels Riemersma (Jan ter Schure)
  */
 public class Server extends Thread {
 
     private ServerSocket serverSocket;
-    
+
     private Server.onMessageReceived messageListener;
     private final int SERVERPORT = 4443;
     private boolean running = false;
-    
+
     private PrintWriter outputWriter;
     private BufferedReader inputReader;
 
@@ -75,6 +75,7 @@ public class Server extends Thread {
     }
 
     public interface onMessageReceived {
+
         public void messageReceived(String message);
     }
 

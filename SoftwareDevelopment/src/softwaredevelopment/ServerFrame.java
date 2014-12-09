@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 
 /**
  *
- * @author Jan
+ * @author Niels Riemersma (Jan ter Schure)
  */
 public class ServerFrame extends JFrame implements ActionListener {
 
@@ -48,8 +48,8 @@ public class ServerFrame extends JFrame implements ActionListener {
             txtArea.append("Server: " + message + "\n");
         }
     }
-    
-    public void txtAreaAppend(String printMessage){
+
+    public void txtAreaAppend(String printMessage) {
         txtArea.append(printMessage);
     }
 }

@@ -22,8 +22,8 @@ public class TrafficLock {
     public void release() {
         locked = false;
     }
-    
-    public boolean getLock(){
+
+    public boolean getLock() {
         return locked;
     }
 }
