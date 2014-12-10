@@ -50,6 +50,6 @@ public class ServerFrame extends JFrame implements ActionListener {
     }
 
     public void txtAreaAppend(String printMessage) {
-        txtArea.append(printMessage);
+        txtArea.append(printMessage + "\n");
     }
 }

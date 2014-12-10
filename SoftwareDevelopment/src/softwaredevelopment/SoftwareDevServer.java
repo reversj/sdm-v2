@@ -28,19 +28,18 @@ public class SoftwareDevServer {
         sys.start();
     }
 
-    public void response() {
-        mServer.send("");
-    }
+    /*public void response() {
+     mServer.send("");
+     }*/
     public static Server mServer = new Server(new Server.onMessageReceived() {
         public void messageReceived(String message) {
-            frame.txtAreaAppend("Client: " + message + "\n");
+            //frame.txtAreaAppend("Client: " + message + "\n");
 
             try {
                 sys.messageHandler(message.toCharArray());
                 prevMessage = message;
 
             } catch (Exception e) {
-                //System.out.println(e);
             }
         }
     });

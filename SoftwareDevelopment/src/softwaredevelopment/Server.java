@@ -18,11 +18,9 @@ import java.net.Socket;
 public class Server extends Thread {
 
     private ServerSocket serverSocket;
-
     private Server.onMessageReceived messageListener;
     private final int SERVERPORT = 4443;
     private boolean running = false;
-
     private PrintWriter outputWriter;
     private BufferedReader inputReader;
 

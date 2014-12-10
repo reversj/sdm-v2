@@ -38,16 +38,14 @@ public class TrafficSystem extends Thread {
     /* TREIN */
     TrafficLight TREIN_OOST_WEST = new TrafficLight("OWT");
     TrafficLight TREIN_WEST_OOST = new TrafficLight("WOT");
-
     TrafficLight[] AUTO_LIGHTS = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_OOST_WEST,
         AUTO_WEST_NOORD, AUTO_WEST_ZUID, AUTO_WEST_OOST, AUTO_ZUID_WEST, AUTO_ZUID_NOORD, AUTO_ZUID_OOST};
-
-    public boolean next = true;
+    //private boolean next = true;
+    private ServerFrame frame = new ServerFrame();
     private boolean running = true;
-    char[] message;
-    String light;
-    int switcher;
-
+    //char[] message;
+    // light;
+    //int switcher;
     private int VAN = 1;
     private int NAAR = 2;
     private int VOERTUIG = 3;
@@ -72,14 +70,16 @@ public class TrafficSystem extends Thread {
             if (message[NAAR] == 'W' && message[VOERTUIG] == 'A') {
                 lightHandler(AUTO_NOORD_WEST, message[AANTAL]);
             }
-        } else if (message[VAN] == 'O' && message[VOERTUIG] == 'A') {
+        }
+        if (message[VAN] == 'O' && message[VOERTUIG] == 'A') {
             if (message[NAAR] == 'N') {
                 lightHandler(AUTO_OOST_NOORD, message[AANTAL]);
             }
             if (message[NAAR] == 'W' && message[VOERTUIG] == 'A') {
                 lightHandler(AUTO_OOST_WEST, message[AANTAL]);
             }
-        } else if (message[VAN] == 'W' && message[VOERTUIG] == 'A') {
+        }
+        if (message[VAN] == 'W' && message[VOERTUIG] == 'A') {
             if (message[NAAR] == 'N') {
                 lightHandler(AUTO_WEST_NOORD, message[AANTAL]);
             }
@@ -89,7 +89,8 @@ public class TrafficSystem extends Thread {
             if (message[NAAR] == 'O' && message[VOERTUIG] == 'A') {
                 lightHandler(AUTO_WEST_OOST, message[AANTAL]);
             }
-        } else if (message[VAN] == 'Z' && message[VOERTUIG] == 'A') {
+        }
+        if (message[VAN] == 'Z' && message[VOERTUIG] == 'A') {
             if (message[NAAR] == 'W') {
                 lightHandler(AUTO_ZUID_WEST, message[AANTAL]);
             }
@@ -126,57 +127,44 @@ public class TrafficSystem extends Thread {
     }
 
     public TrafficLight[] checkPossible(TrafficLight light) {
-        TrafficLight[] possibleLights;
-
+        TrafficLight[] possibleLights = null;
         if (light.getName().equals("OWB")) { // 2
             possibleLights = new TrafficLight[]{AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("NWA")) { // 7
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("NZA")) { // 5
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_ZUID_OOST};
-            return possibleLights;
         }
         if (light.getName().equals("NOA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("ZNA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_ZUID_WEST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("ZOA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_ZUID_WEST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("ZWA")) { // 4
             possibleLights = new TrafficLight[]{AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_OOST_NOORD, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("ONA")) { // 7
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_ZUID_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("OWA")) { // 3
             possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("WNA")) { // 3
             possibleLights = new TrafficLight[]{AUTO_NOORD_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("WOA")) { // 5
             possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_WEST_NOORD, AUTO_WEST_ZUID};
-            return possibleLights;
         }
         if (light.getName().equals("WZA")) { // 9
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_OOST_WEST, AUTO_ZUID_NOORD, AUTO_ZUID_OOST, AUTO_ZUID_WEST, AUTO_WEST_NOORD, AUTO_WEST_OOST};
-            return possibleLights;
         }
-        return null;
+        return possibleLights;
     }
 
     public void secLight(TrafficLight[] possibleLights) {
@@ -217,11 +205,11 @@ public class TrafficSystem extends Thread {
         firstPrio.startTimer(0);
         secPrio.startTimer(0);
         thirdPrio.startTimer(0);
-        System.out.println("Activating lights at:");
-        System.out.println(firstPrio.getName());
-        System.out.println(secPrio.getName());
-        System.out.println(thirdPrio.getName());
-        System.out.println("------------------------");
+        frame.txtAreaAppend("Activating lights at:");
+        frame.txtAreaAppend(firstPrio.getName());
+        frame.txtAreaAppend(secPrio.getName());
+        frame.txtAreaAppend(thirdPrio.getName());
+        frame.txtAreaAppend("------------------------");
     }
 
     public void nextLight() {
@@ -244,7 +232,6 @@ public class TrafficSystem extends Thread {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
-                //Logger.getLogger(TrafficSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

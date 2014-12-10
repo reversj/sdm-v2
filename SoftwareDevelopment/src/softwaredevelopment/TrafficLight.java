@@ -19,7 +19,6 @@ public class TrafficLight {
     private SoftwareDevServer softDevServer;
     private String stopLightName;
     private int stoplightRow;
-
     static Timer timer;
     static int count;
 
