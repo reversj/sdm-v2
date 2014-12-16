@@ -17,6 +17,7 @@ import java.net.Socket;
  */
 public class Server extends Thread {
 
+    ServerFrame frame = new ServerFrame();
     private ServerSocket serverSocket;
     private Server.onMessageReceived messageListener;
     private final int SERVERPORT = 4443;
@@ -35,7 +36,7 @@ public class Server extends Thread {
         running = true;
 
         try {
-            System.out.println("Server: Attempting to accept client connection..");
+            System.out.println("Server: Attempting to accept client connection.");
 
             //Create a server socket on port 4443 (10 connect attempts max.)
             serverSocket = new ServerSocket(SERVERPORT, 10);

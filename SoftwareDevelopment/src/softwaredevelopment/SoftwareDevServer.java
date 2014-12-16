@@ -27,13 +27,9 @@ public class SoftwareDevServer {
         mServer.start();
         sys.start();
     }
-
-    /*public void response() {
-     mServer.send("");
-     }*/
+    
     public static Server mServer = new Server(new Server.onMessageReceived() {
         public void messageReceived(String message) {
-            //frame.txtAreaAppend("Client: " + message + "\n");
 
             try {
                 sys.messageHandler(message.toCharArray());
@@ -43,11 +39,10 @@ public class SoftwareDevServer {
             }
         }
     });
-
-    public static void frame() {
-        //opens the window where the messages will be received and sent
+    
+    public static void frame(){
         frame = new ServerFrame();
-        frame.setSize(400, 400);
+        frame.setSize(150, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }

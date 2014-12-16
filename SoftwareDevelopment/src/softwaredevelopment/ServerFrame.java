@@ -5,12 +5,12 @@
 package softwaredevelopment;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -18,35 +18,30 @@ import javax.swing.JTextArea;
  *
  * @author Niels Riemersma (Jan ter Schure)
  */
-public class ServerFrame extends JFrame implements ActionListener {
+public class ServerFrame extends JFrame {
 
     private SoftwareDevServer softDevServer;
     private Container frameTop = new Container();
-    private JButton btnSend = new JButton("Send");
-    private JTextArea txtArea = new JTextArea();
-    private JTextArea txtInput = new JTextArea();
+    private JTextArea txtArea;
+    private JLabel lblFrame;
+    private JScrollPane scrollPane;
+    private Font myFont = new Font("Arial", Font.BOLD, 12);
 
     public ServerFrame() {
         softDevServer = new SoftwareDevServer();
-
+        lblFrame = new JLabel("KRUISPUNT SIM");
+        txtArea = new JTextArea();
+        scrollPane = new JScrollPane(txtArea);
+        
         frameTop.setLayout(new GridLayout(1, 3));
-        frameTop.add(btnSend);
-        frameTop.add(txtInput);
-        btnSend.addActionListener(this);
+        frameTop.add(lblFrame);
         this.add(frameTop, BorderLayout.NORTH);
-
+        txtArea.setFont(myFont);
+        txtArea.setBackground(Color.LIGHT_GRAY);
+        txtArea.append("\n" + "Sietse van der Werf\n" + "Niels Riemersma\n" + "NHL Informatica\n" + "SDM --- 2014");
         txtArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(txtArea);
-
+        
         this.add(scrollPane);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(btnSend)) {
-            String message = txtInput.getText();
-            txtArea.append("Server: " + message + "\n");
-        }
     }
 
     public void txtAreaAppend(String printMessage) {
