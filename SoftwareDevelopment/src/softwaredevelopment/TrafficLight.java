@@ -13,6 +13,7 @@ import java.util.TimerTask;
  */
 public class TrafficLight {
 
+    private int times_called = 0;
     private int status = 1;
     private String state;
     private boolean active;
@@ -38,8 +39,12 @@ public class TrafficLight {
                 softDevServer.setActive(true);
                 break;
             case 2:
-                state = "G";    //Green    
-                startTimer(6);
+                state = "G";    //Green
+                if (stopLightName.equals("OWT") || stopLightName.equals("WOT")) {
+                    startTimer(30);
+                } else {
+                    startTimer(6);
+                }
                 break;
             case 3:
                 state = "O";   //Orange
@@ -87,6 +92,18 @@ public class TrafficLight {
         stoplightRow = 0;
     }
 
+    public void called() {
+        times_called++;
+    }
+
+    public void resetcalled() {
+        times_called = 0;
+    }
+
+    public int getCalled() {
+        return times_called;
+    }
+
     public void nextStatus() {
         if (status < 3) {
             status++;
@@ -110,7 +127,6 @@ public class TrafficLight {
                         softDevServer.mServer.send(stopLightName + temp);
                     } else {
                         timer.cancel();
-                        //status = 0;test
                     }
                 }
             }

@@ -10,7 +10,7 @@ package softwaredevelopment;
  * @author Niels Riemersma
  */
 public class LightHandler {
-    private ServerFrame frame = new ServerFrame();
+    //private ServerFrame frame = new ServerFrame();
 
     TrafficLight prevLight = new TrafficLight("PREV");
     TrafficLight firstPrio = new TrafficLight("FIRST");
@@ -28,8 +28,7 @@ public class LightHandler {
     TrafficLight AUTO_WEST_ZUID = new TrafficLight("WZA");
     TrafficLight AUTO_WEST_OOST = new TrafficLight("WOA");
     TrafficLight AUTO_ZUID_WEST = new TrafficLight("ZWA");
-    TrafficLight AUTO_ZUID_NOORD = new TrafficLight("ZNA");
-    //TrafficLight AUTO_ZUID_OOST = new TrafficLight("ZOA");
+    TrafficLight AUTO_ZUID_NOORD = new TrafficLight("ZOA"); /// <<<<==== EROOR MOGEOGELIJKE HENDE
 
     /* BUS */
     TrafficLight BUS_OOST_WEST = new TrafficLight("OWB");
@@ -49,25 +48,25 @@ public class LightHandler {
     TrafficLight TREIN_WEST_OOST = new TrafficLight("WOT");
 
     TrafficLight[] ALL_LIGHTS = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_OOST_WEST,
-        AUTO_WEST_NOORD, AUTO_WEST_ZUID, AUTO_WEST_OOST, AUTO_ZUID_WEST, AUTO_ZUID_NOORD, BUS_OOST_WEST, TREIN_OOST_WEST, TREIN_WEST_OOST};
+        AUTO_WEST_NOORD, AUTO_WEST_ZUID, AUTO_WEST_OOST, AUTO_ZUID_WEST, AUTO_ZUID_NOORD};
 
     public TrafficLight[] checkPossible(TrafficLight light) {
         TrafficLight[] possibleLights = null;
         /* BUS */
         if (light.getName().equals("OWB")) { // 2
-            possibleLights = new TrafficLight[]{AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_OOST_WEST};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_OOST_WEST};
         }
         /* AUTOS */
         if (light.getName().equals("NWA")) { // 7
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_ZUID_NOORD};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_ZUID_NOORD};
         }
         if (light.getName().equals("NZA")) { // 5
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_ZUID_NOORD, FIETS_NOORD_ZUID, FIETS_ZUID_NOORD /*AUTO_ZUID_OOST*/};
         }
         if (light.getName().equals("NOA")) { // 4
-            possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_WEST_ZUID, FIETS_NOORD_ZUID};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_WEST_ZUID, FIETS_NOORD_ZUID};
         }
-        if (light.getName().equals("ZNA")) { // 4
+        if (light.getName().equals("ZOA")) { // 4 <<<<<<<<<<< EOROROEOEOE OEJEOEJEOJE
             possibleLights = new TrafficLight[]{AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_ZUID_WEST, AUTO_WEST_ZUID, FIETS_NOORD_ZUID, FIETS_ZUID_NOORD};
         }
         /*if (light.getName().equals("ZOA")) { // 4
@@ -77,29 +76,29 @@ public class LightHandler {
             possibleLights = new TrafficLight[]{AUTO_ZUID_NOORD, /*AUTO_ZUID_OOST,*/ AUTO_OOST_NOORD, AUTO_WEST_ZUID, FIETS_ZUID_NOORD, FIETS_OOST_WEST};
         }
         if (light.getName().equals("ONA")) { // 7
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_ZUID_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_NOORD_ZUID};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_ZUID_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_NOORD_ZUID};
         }
         if (light.getName().equals("OWA")) { // 3
-            possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_OOST_WEST};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_OOST_NOORD, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_OOST_WEST};
         }
         if (light.getName().equals("WNA")) { // 3
-            possibleLights = new TrafficLight[]{AUTO_NOORD_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_ZUID_NOORD};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_NOORD_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID, FIETS_ZUID_NOORD};
         }
         if (light.getName().equals("WOA")) { // 5
-            possibleLights = new TrafficLight[]{AUTO_OOST_NOORD, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_WEST_NOORD, AUTO_WEST_ZUID, FIETS_OOST_WEST};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_OOST_NOORD, AUTO_NOORD_WEST, AUTO_OOST_WEST, AUTO_WEST_NOORD, AUTO_WEST_ZUID, FIETS_OOST_WEST};
         }
         if (light.getName().equals("WZA")) { // 9
             possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_OOST_WEST, AUTO_ZUID_NOORD, /*AUTO_ZUID_OOST,*/ AUTO_ZUID_WEST, AUTO_WEST_NOORD, AUTO_WEST_OOST, FIETS_ZUID_NOORD, FIETS_OOST_WEST};
         }
 
         if (light.getName().equals("OWF")) {
-            possibleLights = new TrafficLight[]{AUTO_OOST_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID, AUTO_ZUID_WEST, FIETS_NOORD_ZUID, FIETS_ZUID_NOORD};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_OOST_WEST, AUTO_WEST_OOST, AUTO_WEST_ZUID, AUTO_ZUID_WEST, FIETS_NOORD_ZUID, FIETS_ZUID_NOORD};
         }
         if (light.getName().equals("NZF")) {
-            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_ZUID_NOORD, AUTO_OOST_NOORD, FIETS_ZUID_NOORD, FIETS_OOST_WEST};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_NOORD_OOST, AUTO_NOORD_ZUID, AUTO_ZUID_NOORD, AUTO_OOST_NOORD, FIETS_ZUID_NOORD, FIETS_OOST_WEST};
         }
         if (light.getName().equals("ZNF")) {
-            possibleLights = new TrafficLight[]{AUTO_NOORD_WEST, AUTO_NOORD_ZUID, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_ZUID, AUTO_ZUID_WEST, FIETS_OOST_WEST, FIETS_NOORD_ZUID};
+            possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST, AUTO_NOORD_WEST, AUTO_NOORD_ZUID, AUTO_ZUID_NOORD, AUTO_WEST_NOORD, AUTO_WEST_ZUID, AUTO_ZUID_WEST, FIETS_OOST_WEST, FIETS_NOORD_ZUID};
         }
         return possibleLights;
     }
@@ -118,14 +117,12 @@ public class LightHandler {
             if (BUS_OOST_WEST.getRowAmount() != 0) {
                 firstPrio = BUS_OOST_WEST;
                 BUS_OOST_WEST.resetRowAmount();
-            } else {
-                for (int i = 0; i < all_lights.length; i++) {
-                    if (all_lights[i].getRowAmount() > 8) {
-                        firstPrio = all_lights[i];
-                    } else if (all_lights[i].getRowAmount() > firstPrio.getRowAmount()) {
-                        firstPrio = all_lights[i];
-                    }
+            }
+            for (int i = 0; i < all_lights.length; i++) {
+                if (all_lights[i].getRowAmount() > firstPrio.getRowAmount()) {
+                    firstPrio = all_lights[i];
                 }
+                firstPrio.resetcalled();
             }
         }
     }
@@ -186,8 +183,14 @@ public class LightHandler {
 
     public void activateLights() {
         firstPrio.startTimer(0);
+        firstPrio.called();
         secPrio.startTimer(0);
+        secPrio.called();
         thirdPrio.startTimer(0);
+        thirdPrio.called();
+        System.out.println("FIRST PRIO = " + firstPrio.getName() + ", CALLED " + firstPrio.getCalled() + " TIMES.");
+        System.out.println("SECOND PRIO = " + secPrio.getName() + ", CALLED " + secPrio.getCalled() + " TIMES.");
+        System.out.println("THIRD PRIO = " + thirdPrio.getName() + ", CALLED " + thirdPrio.getCalled() + " TIMES.");
     }
 
     public void nextLight() {
