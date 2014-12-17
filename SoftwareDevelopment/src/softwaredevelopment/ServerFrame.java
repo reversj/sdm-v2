@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
  */
 public class ServerFrame extends JFrame {
 
-    private SoftwareDevServer softDevServer;
+    private final SoftwareDevServer softDevServer;
     private Container frameTop = new Container();
     private JTextArea txtArea;
     private JLabel lblFrame;
@@ -32,7 +32,7 @@ public class ServerFrame extends JFrame {
         lblFrame = new JLabel("KRUISPUNT SIM");
         txtArea = new JTextArea();
         scrollPane = new JScrollPane(txtArea);
-        
+
         frameTop.setLayout(new GridLayout(1, 3));
         frameTop.add(lblFrame);
         this.add(frameTop, BorderLayout.NORTH);
@@ -40,7 +40,7 @@ public class ServerFrame extends JFrame {
         txtArea.setBackground(Color.LIGHT_GRAY);
         txtArea.append("\n" + "Sietse van der Werf\n" + "Niels Riemersma\n" + "NHL Informatica\n" + "SDM --- 2014");
         txtArea.setEditable(false);
-        
+
         this.add(scrollPane);
     }
 

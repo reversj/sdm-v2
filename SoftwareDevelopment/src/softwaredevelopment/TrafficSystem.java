@@ -12,7 +12,6 @@ public class TrafficSystem extends Thread {
 
     private final LightHandler lightHandler = new LightHandler();
 
-    //private final ServerFrame frame = new ServerFrame();
     private final boolean running = true;
 
     private final int VAN = 1;
@@ -27,12 +26,6 @@ public class TrafficSystem extends Thread {
     }
 
     public void messageHandler(char[] message) {
-        /*if (message[VOERTUIG] == 'A' && message[VAN] == 'Z'){
-         if (message[NAAR] == 'W')
-         System.out.println("AUTOS SUIZZG WESDT");
-         else
-         System.out.println("AUTO ZUID JWZ");
-         }*/
 
         /* TREIN */
         if (message[VOERTUIG] == 'T') {

@@ -27,7 +27,7 @@ public class SoftwareDevServer {
         mServer.start();
         sys.start();
     }
-    
+
     public static Server mServer = new Server(new Server.onMessageReceived() {
         public void messageReceived(String message) {
 
@@ -39,8 +39,8 @@ public class SoftwareDevServer {
             }
         }
     });
-    
-    public static void frame(){
+
+    public static void frame() {
         frame = new ServerFrame();
         frame.setSize(150, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
