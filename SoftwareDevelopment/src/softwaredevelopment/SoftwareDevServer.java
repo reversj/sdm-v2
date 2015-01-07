@@ -42,7 +42,7 @@ public class SoftwareDevServer {
 
     public static void frame() {
         frame = new ServerFrame();
-        frame.setSize(150, 150);
+        frame.setSize(200, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }

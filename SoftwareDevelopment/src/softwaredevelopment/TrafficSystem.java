@@ -39,9 +39,9 @@ public class TrafficSystem extends Thread {
 
         /* BUS */
         if (message[VOERTUIG] == 'B') {
-            if (message[VAN] == 'O' && message[NAAR] == 'W') {
-                lightHandler.BUS_OOST_WEST.setRowAmount(message[AANTAL]);
-            }
+            lightHandler.BUS_OOST_WEST.setRowAmount(message[AANTAL]);
+            /*if (message[VAN] == 'O' && message[NAAR] == 'W') {
+            }*/
         }
 
         /* AUTO */
@@ -86,26 +86,13 @@ public class TrafficSystem extends Thread {
             }
         }
 
-        /* FIETS */
-        if (message[VOERTUIG] == 'F') {
+        /* FIETS OF VOETGANGER */
+        if (message[VOERTUIG] == 'F' || message[VOERTUIG] == 'V') {
             // AAN DE NOORDKANT
             if (message[VAN] == 'O' && message[NAAR] == 'W') {
                 lightHandler.FIETS_OOST_WEST.setRowAmount(message[AANTAL]);
             }
-            // AAN DE OOSTKANT
-            if (message[VAN] == 'N' && message[NAAR] == 'Z') {
-                lightHandler.FIETS_NOORD_ZUID.setRowAmount(message[AANTAL]);
-            }
-            // AAN DE WESTKANT
-            if (message[VAN] == 'Z' && message[NAAR] == 'N') {
-                lightHandler.FIETS_ZUID_NOORD.setRowAmount(message[AANTAL]);
-            }
-        }
-
-        /* VOETGANGER */
-        if (message[VOERTUIG] == 'V') {
-            // AAN DE NOORDKANT
-            if (message[VAN] == 'O' && message[NAAR] == 'W') {
+            if (message[VAN] == 'W' && message[NAAR] == 'O'){
                 lightHandler.FIETS_OOST_WEST.setRowAmount(message[AANTAL]);
             }
             // AAN DE OOSTKANT

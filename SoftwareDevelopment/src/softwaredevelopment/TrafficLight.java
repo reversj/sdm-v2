@@ -41,7 +41,9 @@ public class TrafficLight {
             case 2:
                 state = "G";    //Green
                 if (stopLightName.equals("OWT") || stopLightName.equals("WOT")) {
-                    startTimer(30);
+                    startTimer(20);
+                } else if (stoplightRow > 6) {
+                    startTimer(stoplightRow);
                 } else {
                     startTimer(6);
                 }

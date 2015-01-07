@@ -37,11 +37,6 @@ public class LightHandler {
     TrafficLight FIETS_ZUID_NOORD = new TrafficLight("ZNF");
     TrafficLight FIETS_OOST_WEST = new TrafficLight("OWF");
 
-    /* VOETGANGERS */
-    /*TrafficLight VOET_NOORD_ZUID = new TrafficLight("NZV");
-     TrafficLight VOET_ZUID_NOORD = new TrafficLight("ZNV");
-     TrafficLight VOET_OOST_WEST = new TrafficLight("OWV");*/
-
     /* TREIN */
     TrafficLight TREIN_OOST_WEST = new TrafficLight("OWT");
     TrafficLight TREIN_WEST_OOST = new TrafficLight("WOT");
@@ -51,6 +46,11 @@ public class LightHandler {
 
     public TrafficLight[] checkPossible(TrafficLight light) {
         TrafficLight[] possibleLights = null;
+        /* TREIN */
+        if (light.getName().equals("OWT") || light.getName().equals("WOT")) {
+            possibleLights = new TrafficLight[]{AUTO_NOORD_OOST, AUTO_NOORD_WEST, AUTO_OOST_NOORD, AUTO_OOST_WEST,
+        AUTO_WEST_NOORD, AUTO_WEST_OOST};
+        }
         /* BUS */
         if (light.getName().equals("OWB")) {
             possibleLights = new TrafficLight[]{TREIN_OOST_WEST, TREIN_WEST_OOST,
